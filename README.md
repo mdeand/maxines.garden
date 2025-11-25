@@ -1,6 +1,6 @@
 # [maxines.garden](https://maxines.garden) Source Tree
 
-My endless ensemble of notes and articles. Exploring topics in type theory, software architecture, DevOps, and programming. 
+My personal ensemble of notes and articles. Exploring topics in type theory, software architecture, DevOps, and programming. 
 
 ## Acknowledgements
 
