@@ -7,6 +7,9 @@ in with pkgs; mkShell {
   packages = [
     pkgs.gnumake
     pkgs.black 
+    pkgs.pandoc
+    pkgs.tailwindcss_4
+
     pythonPackages.python-dotenv
     pythonPackages.flask
   ];
