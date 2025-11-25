@@ -11,7 +11,7 @@ class ContentMetadata:
     title: str
     description: str
     pub_date: str
-    edit_date: str | None
+    edit_date: str | None = None
     tags: list[str]
     group: str
     visible: bool
