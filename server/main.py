@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from flask import Flask, send_from_directory
 from shared.db import Db
@@ -20,14 +21,20 @@ def index():
 
 def main():
     load_dotenv()
+    env = Env()
 
     with app.app_context():
         if app.config.get("db") is None:
-            db = app.config["db"] = Db(Env().db_path)
+            app.config["db"] = Db(env.db_path)
 
     app.register_blueprint(e.blueprint)
-    app.run()
-
+    
+    match env.deployment_mode:
+        case "Debug":
+            app.run(port=5000, debug=True)
+        case "Production":
+            from waitress import serve
+            serve(app, host="0.0.0.0", port=5000)
 
 if __name__ == "__main__":
     main()

@@ -7,6 +7,9 @@ fmt:
 format: 
 	@black server tools shared
 
+css:
+	@tailwindcss -i ./styles/stylesheet.css -o ./dist/stylesheet.css --minify
+
 css-watch:
 	@tailwindcss -i ./styles/stylesheet.css -o ./dist/stylesheet.css --minify --watch
 
