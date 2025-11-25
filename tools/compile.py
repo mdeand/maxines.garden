@@ -1,4 +1,5 @@
 import os
+import shared.util as util
 import pandoc
 import pandoc.types as pt
 from pathlib import Path
@@ -69,7 +70,7 @@ def parse_meta(meta: pt.Meta) -> ContentMetadata:
 
 def template(metadata: ContentMetadata, name: str, body: str) -> str:
     template_str = (
-        Path(Path(__file__).parent / "templates" / name)
+        Path(Path(__file__).parent.parent / "templates" / name)
         .with_suffix(".html")
         .read_text()
     )
@@ -80,15 +81,15 @@ def template(metadata: ContentMetadata, name: str, body: str) -> str:
     )
 
 
-def register(db):
+def compile(db):
     for filename in os.listdir(CONTENT_ENTRIES_DIRECTORY):
         if filename.endswith(".md"):
             slug = filename[:-3]
             filepath = os.path.join(CONTENT_ENTRIES_DIRECTORY, filename)
             entry = db.get_entry_by_slug(slug)
+            content = Path(filepath).read_text()
 
-            if entry is None:
-                content = Path(filepath).read_text()
+            if entry is None or entry[4] != util.md5_hash(content):
                 doc = pandoc.read(content)
 
                 if doc[0] and not isinstance(doc[0], pt.Meta):
@@ -100,7 +101,7 @@ def register(db):
                 db.insert_entry(
                     slug=slug,
                     body=body,
-                    content_md5_hash="meow",
+                    content_md5_hash=util.md5_hash(content),
                     user_title=metadata.title if metadata else None,
                     user_description=metadata.description,
                     user_group=metadata.group,
@@ -109,3 +110,10 @@ def register(db):
                     user_visibility="public",
                     user_draft=0,
                 )
+
+if __name__ == "__main__":
+    from shared.db import Db
+    from shared.env import Env
+
+    db = Db(Env().db_path)
+    compile(db)

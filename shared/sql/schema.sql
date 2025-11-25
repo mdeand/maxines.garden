@@ -3,7 +3,7 @@ PRAGMA user_version = 1;
 create table entries (
   id integer primary key autoincrement,
   
-  slug text unique not null,
+  slug text unique not null on conflict replace,
   body text not null,  
   views integer default 0,
   content_md5_hash text not null,

@@ -27,7 +27,7 @@ in with pkgs; mkShell {
     fi
     
     source ./$VENV/bin/activate
-    export PYTHONPATH=`pwd`/$VENV/${python.sitePackages}/:$PYTHONPATH
+    export PYTHONPATH=`pwd`/$VENV/${python.sitePackages}/:$PYTHONPATH:.
 
     pip install --upgrade pip
     pip install -r requirements.txt
