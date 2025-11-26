@@ -7,3 +7,21 @@ services:
       - "5000:5000"
     restart: unless-stopped
     container_name: maxines-garden
+    networks:
+      - app-network
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    container_name: maxines-garden-tunnel
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+networks:
+  app-network:
+    driver: bridge
