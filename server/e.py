@@ -1,15 +1,16 @@
 """The formidable module e.py"""
 
-from flask import Blueprint
-from flask import current_app
+from flask import Blueprint, current_app, render_template
 
-blueprint = Blueprint("e", __name__, template_folder="templates")
+blueprint = Blueprint("e", __name__, template_folder="../templates")
 
 
-@blueprint.route("/e")
-@blueprint.route("/entries")
+@blueprint.route("/everything")
 def index():
-    return "<p>This is the e page.</p>"
+    db = current_app.config["db"]
+    entries = db.get_entries()
+
+    return render_template("e-index.html", entries=entries)
 
 
 @blueprint.route("/e/<slug>")
