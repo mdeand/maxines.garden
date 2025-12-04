@@ -9,6 +9,7 @@ in with pkgs; mkShell {
     pkgs.black 
     pkgs.pandoc
     pkgs.tailwindcss_4
+    pkgs.watchman
 
     pythonPackages.python-dotenv
     pythonPackages.flask
